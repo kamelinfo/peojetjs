@@ -1,5 +1,6 @@
 // 1. Déclarer un tableau de prénoms
-let membres = ["Sara", "Ali", "aMehdi", "Nina"]; //ta3li9
+const membres = ["Sara", "Ali", "aMehdi", "Nina"]; //ta3li9
+
 console.log("List de membres: ", membres);
 // 2. Afficher le nombre de membres
 console.log("Nombre de membres :", membres.length);
@@ -134,3 +135,5 @@ let personnes = [
   },
 ];
 console.log(personnes[0].formations[1]);
+
+

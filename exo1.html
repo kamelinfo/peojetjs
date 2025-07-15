@@ -11,7 +11,7 @@
 <body class="p-4">
 
     <div class="card mx-auto" style="max-width: 400px;">
-        <img id="avatar" src="https://i.pravatar.cc/400?u=student123" class="card-img-top" style="height: 100px;"
+        <img id="avatar" src="" class="card-img-top" style="height: 100px;"
             alt="Avatar">
         <div class="card-body">
             <h5 id="name" class="card-title">Nom d'utilisateur</h5>
@@ -20,7 +20,7 @@
             <div class="mb-3">
                 <input type="text" id="inputName" class="form-control" placeholder="Nouveau nom">
             </div>
-            <button class="btn btn-primary mb-2" onclick="updateName()">Changer le nom</button>
+            <button class="btn btn-outline-primary mb-2" onclick="updateName()">Changer le nom</button>
 
             <div class="mb-3">
                 <input type="text" id="inputBio" class="form-control" placeholder="Nouvelle bio">
@@ -33,20 +33,50 @@
 
     <script src="script.js"></script>
     <script>
-       /* Copier le code HTML ci-dessus dans index.html.
-    
-    Créer script.js avec les 3 fonctions : updateName(), updateBio(), toggleTheme().
-    
-    updateName() : récupère la valeur de #inputName, la place dans #name si non vide, et fait un console.log.
-    
-    updateBio() : récupère #inputBio, place dans #bio ou remets le placeholder si vide, avec console.log.
-    
-    toggleTheme() : bascule un booléen dark. Si true, modifie le backgroundColor et color du .card, sinon remet les styles par défaut. Log dans la console.
-    
-    Ajouter des console.log dans chaque fonction pour afficher ce qui est changé.
-    
-    Tester dans le navigateur. */
-       
+        /* Copier le code HTML ci-dessus dans index.html.
+     
+     Créer script.js avec les 3 fonctions : updateName(), updateBio(), toggleTheme().
+     
+     updateName() : récupère la valeur de #inputName, la place dans #name si non vide, et fait un console.log.
+     
+     updateBio() : récupère #inputBio, place dans #bio ou remets le placeholder si vide, avec console.log.
+     
+     toggleTheme() : bascule un booléen dark. Si true, modifie le backgroundColor et color du .card, sinon remet les styles par défaut. Log dans la console.
+     
+     Ajouter des console.log dans chaque fonction pour afficher ce qui est changé.
+     
+     Tester dans le navigateur. */
+        function updateName() {
+            const newName = document.getElementById('inputName').value;
+            if (newName.trim() !== '') {
+                document.getElementById('name').innerHTML = newName;
+                console.log('Nom mis à jour:', newName);
+            } else {
+                console.log('Nom vide – pas de modification.');
+            }
+        }
+
+        function updateBio() {
+            const newBio = document.getElementById('inputBio').value;
+            document.getElementById('bio').innerHTML = newBio || 'Bio courte...';
+            console.log('Bio mise à jour:', newBio);
+        }
+
+
+        let dark = false;
+        function toggleTheme() {
+            dark = !dark;
+            const card = document.getElementById('avatar');
+            if (dark) {
+                card.style.backgroundColor = '#333';
+                card.style.color = '#f5f5f5';
+                console.log('Mode sombre activé');
+            } else {
+                card.style.backgroundColor = '';
+                card.style.color = '';
+                console.log('Mode sombre désactivé');
+            }
+        }
 
     </script>
 </body>
