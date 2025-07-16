@@ -5,21 +5,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>cour js</title>
+  <style> 
+#panel, #flip {
+  padding: 5px;
+  text-align: center;
+  background-color: #e5eecc;
+  border: solid 1px #c3c3c3;
+}
 
-    <style>
-        .product-title {
-            color: red;
-           
-        }
-    </style>
+#panel {
+  padding: 50px;
+  display: none;
+}
+</style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 
 <body>
 
- <div id='product-card'></div>
+    <h3>jquerry</h3>
+    <button>Start Animation</button>
+    <br>
+    <br>
+<div style="background:#98bf21;height:100px;width:100px;position:absolute;"></div>
 
 
-    <script src="index.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $("button").click(function () {
+                  $("div").animate({left: '250px',top:'252px'});
+            
+            });
+        });
+    </script>
 </body>
 
 </html>

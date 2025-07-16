@@ -52,6 +52,44 @@ console.log() la réponse, et affichez un retour visuel dans #result.
 Gérez les erreurs via .catch().
 
 Réinitialisez le formulaire si succès.*/
+function submitProduct(event) {
+  event.preventDefault();
+
+  const title = document.getElementById('title').value;
+  const price = parseFloat(document.getElementById('price').value);
+  const description = document.getElementById('description').value;
+  const category = document.getElementById('category').value;
+  const image = document.getElementById('image').value;
+  const resultDiv = document.getElementById('result');
+//destructuration
+  const productData = { title, price, description, category, image };
+
+  console.log('Envoi du produit :', productData);
+
+  fetch('https://fakestoreapi.com/productse', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(productData)
+  })
+    .then(res => {
+      console.log('Statut réponse :', res.status);
+      return res.json();
+    })
+    .then(data => {
+      console.log('Réponse du serveur :', data);
+      resultDiv.innerHTML = `
+        <div class="alert alert-success">
+          Produit ajouté avec l’id <strong>${data.id}</strong>: 
+          ${data.title} - $${data.price.toFixed(2)}
+        </div>`;
+      document.getElementById('product-form').reset();
+    })
+    .catch(err => {
+      console.error('Erreur POST :', err);
+      resultDiv.innerHTML = `<div class="alert alert-danger">Erreur : ${err.message}</div>`;
+    });
+}
+
   </script>
 </body>
 </html>
