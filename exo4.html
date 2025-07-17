@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="UTF‑8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="UTF‑8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Ajouter un produit</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 </head>
+
 <body class="p-4">
   <div class="container" style="max-width: 600px;">
     <h1 class="mb-4">Ajouter un produit</h1>
@@ -34,62 +36,63 @@
     </form>
     <div id="result" class="mt-4"></div>
   </div>
-  <script >
-   /* Créez add-product.js.
-
-Implémentez submitProduct(event) :
-
-event.preventDefault() pour bloquer la soumission standard.
-
-Récupérez les valeurs (title, price, description, category, image) via getElementById().value.
-
-Faites un fetch('https://fakestoreapi.com/products',).
-
-Convertissez la réponse en JSON.
-
-console.log() la réponse, et affichez un retour visuel dans #result.
-
-Gérez les erreurs via .catch().
-
-Réinitialisez le formulaire si succès.*/
-function submitProduct(event) {
-  event.preventDefault();
-
-  const title = document.getElementById('title').value;
-  const price = parseFloat(document.getElementById('price').value);
-  const description = document.getElementById('description').value;
-  const category = document.getElementById('category').value;
-  const image = document.getElementById('image').value;
-  const resultDiv = document.getElementById('result');
-//destructuration
-  const productData = { title, price, description, category, image };
-
-  console.log('Envoi du produit :', productData);
-
-  fetch('https://fakestoreapi.com/productse', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(productData)
-  })
-    .then(res => {
-      console.log('Statut réponse :', res.status);
-      return res.json();
-    })
-    .then(data => {
-      console.log('Réponse du serveur :', data);
-      resultDiv.innerHTML = `
-        <div class="alert alert-success">
-          Produit ajouté avec l’id <strong>${data.id}</strong>: 
-          ${data.title} - $${data.price.toFixed(2)}
-        </div>`;
-      document.getElementById('product-form').reset();
-    })
-    .catch(err => {
-      console.error('Erreur POST :', err);
-      resultDiv.innerHTML = `<div class="alert alert-danger">Erreur : ${err.message}</div>`;
-    });
-}
+  <script>
+    /* Créez add-product.js.
+ 
+ Implémentez submitProduct(event) :
+ 
+ event.preventDefault() pour bloquer la soumission standard.
+ 
+ Récupérez les valeurs (title, price, description, category, image) via getElementById().value.
+ 
+ Faites un fetch('https://fakestoreapi.com/products',).
+ 
+ Convertissez la réponse en JSON.
+ 
+ console.log() la réponse, et affichez un retour visuel dans #result.
+ 
+ Gérez les erreurs via .catch().
+ 
+ Réinitialisez le formulaire si succès.*/
 
   </script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    function submitProduct(event) {
+      event.preventDefault();
+
+      const title = $('#title').val();
+      const price = parseFloat($('#price').val());
+      const description = $('#description').val();
+      const category = $('#category').val();
+      const image = $('#image').val();
+      const resultDiv = $('#result');
+
+      const productData = { title, price, description, category, image };
+      console.log('Envoi du produit :', productData);
+
+      $.ajax('https://fakestoreapi.com/products', {
+        method: 'POST',
+        data: JSON.stringify(productData),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json'
+      })
+        .done(function (data, textStatus, xhr) {
+          console.log('Réponse serveur', xhr.status, data);
+          resultDiv.html(`
+      <div class="alert alert-success">
+        Produit ajouté avec l’id <strong>${data.id}</strong>: 
+        ${data.title} - $${data.price.toFixed(2)}
+      </div>`);
+          $('#product-form')[0].reset();
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+          console.error('Erreur POST :', textStatus, errorThrown);
+          resultDiv.html(`<div class="alert alert-danger">Erreur : ${errorThrown}</div>`);
+        });
+    }
+  </script>
+
 </body>
+
 </html>

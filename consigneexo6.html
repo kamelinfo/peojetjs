@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Consignes Live Search Films</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .step { margin-bottom: 1.5rem; }
+    .code-block { background: #f8f9fa; padding: 0.75rem; border-radius: 4px; font-family: monospace; }
+  </style>
+</head>
+<body class="p-4 bg-light">
+  <div class="container bg-white p-4 rounded shadow-sm">
+    <h1 class="mb-4">🎯 Live Search Films – Consignes</h1>
+    
+    <div class="step">
+      <h4>1. Création de la route</h4>
+      <p>
+        Dans <code>routes/web.php</code>, ajoutez la route suivante :
+      </p>
+      <div class="code-block">
+<pre>
+Route::get('/films/search', [FilmController::class, 'search'])
+     ->name('films.search');
+</pre>
+      </div>
+      <p>Elle doit renvoyer du JSON, parce qu'elle sera utilisée par une requête AJAX.</p>
+    </div>
+    
+    <div class="step">
+      <h4>2. Méthode <code>search()</code> dans le controller</h4>
+      <ol>
+        <li>Récupérez le texte de recherche avec <code>$request->input('q')</code>.</li>
+        <li>Filtrez les films : 
+          <code>Film::where('title', 'like', "%{$q}%")->get();</code>
+        </li>
+        <li>Retournez les résultats en JSON :
+          <code>return response()->json($films);</code>
+        </li>
+      </ol>
+    </div>
+
+    <div class="step">
+      <h4>3. Mise à jour de la vue Blade (<code>index.blade.php</code>)</h4>
+      <p>Avant la table des films, ajoutez :</p>
+      <div class="code-block">
+<pre>
+<div class="mb-3">
+  <input type="text" id="search" class="form-control"
+         placeholder="Recherche live (≥ 3 lettres…)">
+</div>
+<div id="search-results"></div>
+</pre>
+      </div>
+      <p>La table complète reste sous ces éléments pour que l’on puisse comparer visuellement.</p>
+    </div>
+
+    <div class="step">
+      <h4>4. Requête AJAX en jQuery</h4>
+      <p>Ajoutez dans la section <code>&lt;script&gt;</code> de la Blade :</p>
+      <ul>
+        <li>Sélectionnez <code>#search</code> et écoutez <code>input</code>.</li>
+        <li>Si ≥ 3 caractères :
+          <ul>
+            <li>Appelez <code>$.getJSON()</code> vers la route créée, en envoyant <code>q</code>.</li>
+            <li>Dans <code>.done()</code> :
+              <ul>
+                <li>Récupérez le tableau JSON.</li>
+                <li>Générez du HTML (ex. table ou cartes) avec <em>template literals</em>.</li>
+                <li>Injectez ce HTML dans <code>#search-results</code>.</li>
+              </ul>
+            </li>
+            <li>Dans <code>.fail()</code>, affichez un message d’erreur.</li>
+          </ul>
+        </li>
+        <li>Si < 3 caractères, videz simplement <code>#search-results</code>.</li>
+        <li>Placez des <code>console.log()</code> pour le débogage (nombre de résultats, erreurs...).</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h4>5. Vérifications à réaliser</h4>
+      <ul>
+        <li>Tapez ≥ 3 lettres : vérifiez que la requête part et que des résultats s’affichent dynamiquement.</li>
+        <li>Tapez moins de 3 : la zone de résultats doit être vide.</li>
+        <li>Faites une recherche n’ayant aucun film correspondant : un message “Aucun film trouvé.” doit s’afficher.</li>
+        <li>La table principale (non filtrée) doit rester visible en dessous, sans erreur.</li>
+      </ul>
+    </div>
+
+    <footer class="pt-3 border-top text-center">
+      <small>Exercice Laravel + jQuery – Live Search JSON</small>
+    </footer>
+  </div>
+</body>
+</html>
